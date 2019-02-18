@@ -2,40 +2,35 @@ package com.example.i01002706.vokabelapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
+public class Game extends AppCompatActivity {
 
-public class Game extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
-    MyRecyclerViewAdapter adapter;
-
+    private int cardsetId;
+    private List<Card> cards = new ArrayList<>();
+    private CardDao cardDao;
+    private int count = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        ArrayList<Category> categories = new ArrayList<>();
-        Category category1 = new Category("Lektion1");
-        Category category2 = new Category("Lektion2");
-        Category category3 = new Category("Lektion3");
+        Bundle b = getIntent().getExtras();
+        if(b.get("cardsetId")!=null){
+            cardsetId = (int) b.get("cardsetId");
+        }
+        AppDatabase database = AppDatabase.getDatabase(this);
+        cardDao = database.cardDao();
+        cards = cardDao.allCards(cardsetId);
+        TextView question = findViewById(R.id.gameQuestion);
+        TextView answer = findViewById(R.id.gameQuestion);
 
-        categories.add(category1);
-        categories.add(category2);
-        categories.add(category3);
-
-
-        RecyclerView recyclerView = findViewById(R.id.kks);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyRecyclerViewAdapter(this, categories);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-
+        question.setText(cards.get(count).getFrage());
+        answer.setText(cards.get(count).getAntwort());
     }
 }

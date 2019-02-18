@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CardsetActivity" />
+        <activity android:name=".NewCardset" />
+        <activity android:name=".NewCard" />
         <activity android:name=".Game"></activity>
     </application>
 
