@@ -2,6 +2,7 @@ package com.example.i01002706.vokabelapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -29,7 +30,7 @@ public class Game extends AppCompatActivity {
         cards = cardDao.allCards(cardsetId);
         TextView question = findViewById(R.id.gameQuestion);
         TextView answer = findViewById(R.id.gameQuestion);
-
+        Log.d("Test:", String.valueOf(cards.size()));
         question.setText(cards.get(count).getFrage());
         answer.setText(cards.get(count).getAntwort());
     }

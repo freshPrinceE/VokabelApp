@@ -3,6 +3,7 @@ package com.example.i01002706.vokabelapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,24 +20,26 @@ public class NewCard extends AppCompatActivity {
     private String answer;
     private CardDao cardDao;
     private CardsetDao cardsetDao;
+    private String name;
+    private int categoryId;
+    private  EditText q;
+    private EditText a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
 
-        final EditText q = (EditText) findViewById(R.id.question);
-        question = q.getText().toString();
-        final EditText a = (EditText) findViewById(R.id.answer);
-        answer = a.getText().toString();
+
+        Log.d("Test", "Question: " + question + "  Answer: " + answer);
         Button nextCard = (Button) findViewById(R.id.nextCard);
         Button finish = (Button) findViewById(R.id.finish);
         AppDatabase database = AppDatabase.getDatabase(this);
         cardDao = database.cardDao();
         cardsetDao = database.cardsetDao();
         Bundle b = getIntent().getExtras();
-        final String name = (String) b.get("name");
-        final int categoryId = (int) b.get("categoryID");
+        name = (String) b.get("name");
+        categoryId = (int) b.get("categoryID");
 
 
         TextView tv = findViewById(R.id.titleCardset);
@@ -45,6 +48,11 @@ public class NewCard extends AppCompatActivity {
         nextCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                q = (EditText) findViewById(R.id.question);
+                question = q.getText().toString();
+                a = (EditText) findViewById(R.id.answer);
+                answer = a.getText().toString();
+
                 if(question != "" && answer != "") {
                     Card card = new Card();
                     card.setAntwort(answer);
@@ -60,6 +68,10 @@ public class NewCard extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                q = (EditText) findViewById(R.id.question);
+                question = q.getText().toString();
+                a = (EditText) findViewById(R.id.answer);
+                answer = a.getText().toString();
                 Cardset cardset = new Cardset();
                 cardset.setName(name);
                 cardset.setCategoryId(categoryId);

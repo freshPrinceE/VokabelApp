@@ -16,7 +16,7 @@ public class NewCardset extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.new_cardset);
             Bundle b = getIntent().getExtras();
-            final int categoryID = (int) b.get("id");
+            final int categoryID = (int) b.get("categoryID");
             Button next = (Button) findViewById(R.id.next);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override

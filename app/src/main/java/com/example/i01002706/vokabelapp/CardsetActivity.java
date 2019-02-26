@@ -67,7 +67,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
 
     private void changeActivity(){
         Intent intent = new Intent(this, NewCardset.class);
-        intent.putExtra("id", categoryId);
+        intent.putExtra("categoryID", categoryId);
         startActivity(intent);
     }
     @Override
@@ -75,7 +75,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         Intent intent = new Intent(this, Game.class);
         Bundle b = new Bundle();
 
-        b.putInt("cardsetsId", cardsets.get(position).getId());
+        b.putInt("cardsetId", cardsets.get(position).getId());
         intent.putExtras(b);
         startActivity(intent);
     }
