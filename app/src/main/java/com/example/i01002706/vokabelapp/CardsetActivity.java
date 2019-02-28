@@ -15,7 +15,7 @@ import java.util.List;
 
 
 public class CardsetActivity extends AppCompatActivity implements AdapterCardset.ItemClickListener {
-    AdapterCardset adapter;
+    private AdapterCardset adapter;
     private CardsetDao cardsetDao;
     private int categoryId;
     private List<Cardset> cardsets = new ArrayList<>();
@@ -52,7 +52,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         adapter.addCategory(cardsets);
-        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.floatingButton2);
+        FloatingActionButton myFab = findViewById(R.id.floatingButton2);
         myFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

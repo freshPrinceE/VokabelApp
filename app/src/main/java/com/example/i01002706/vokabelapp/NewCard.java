@@ -32,8 +32,8 @@ public class NewCard extends AppCompatActivity {
 
 
         Log.d("Test", "Question: " + question + "  Answer: " + answer);
-        Button nextCard = (Button) findViewById(R.id.nextCard);
-        Button finish = (Button) findViewById(R.id.finish);
+        Button nextCard = findViewById(R.id.nextCard);
+        Button finish = findViewById(R.id.finish);
         AppDatabase database = AppDatabase.getDatabase(this);
         cardDao = database.cardDao();
         cardsetDao = database.cardsetDao();
@@ -48,12 +48,12 @@ public class NewCard extends AppCompatActivity {
         nextCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                q = (EditText) findViewById(R.id.question);
+                q = findViewById(R.id.question);
                 question = q.getText().toString();
-                a = (EditText) findViewById(R.id.answer);
+                a = findViewById(R.id.answer);
                 answer = a.getText().toString();
 
-                if(question != "" && answer != "") {
+                if(!question.equals("") && !answer.equals("")) {
                     Card card = new Card();
                     card.setAntwort(answer);
                     card.setFrage(question);
@@ -68,18 +68,20 @@ public class NewCard extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                q = (EditText) findViewById(R.id.question);
+                q = findViewById(R.id.question);
                 question = q.getText().toString();
-                a = (EditText) findViewById(R.id.answer);
+                a = findViewById(R.id.answer);
                 answer = a.getText().toString();
                 Cardset cardset = new Cardset();
                 cardset.setName(name);
                 cardset.setCategoryId(categoryId);
                 int id = (int) cardsetDao.insert(cardset);
-                if(question != ""){
+                if(!question.equals("")&& !answer.equals("")){
                     Card card = new Card();
                     card.setFrage(question);
                     card.setAntwort(answer);
+                    cards.add(card);
+
                 }
                 for (Card card : cards){
                     card.setCardset_id(id);

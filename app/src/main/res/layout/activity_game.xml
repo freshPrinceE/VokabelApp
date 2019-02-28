@@ -6,14 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".Game">
 
+    <View
+        android:id="@+id/touch"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/gameQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginLeft="160dp"
-        android:layout_marginTop="120dp"
-        android:text="TextView"
+        android:layout_marginTop="108dp"
+        android:text="@string/textview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,38 +31,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
         android:layout_marginLeft="160dp"
-        android:layout_marginTop="60dp"
-        android:text="TextView"
+        android:layout_marginTop="84dp"
+        android:text="@string/textview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameQuestion" />
 
     <Button
         android:id="@+id/gewusst"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginBottom="160dp"
-        android:text="Gewusst"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_width="190dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/gewusst"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/touch" />
 
     <Button
         android:id="@+id/nichtGewusst"
-        android:layout_width="95dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="68dp"
-        android:layout_marginRight="68dp"
-        android:layout_marginBottom="160dp"
-        android:text="Nicht Gewusst"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_width="190dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/nicht_gewusst"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/touch" />
 
-    <View
-        android:id="@+id/touch"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginTop="152dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
