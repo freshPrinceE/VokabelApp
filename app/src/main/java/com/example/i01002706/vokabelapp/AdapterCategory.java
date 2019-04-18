@@ -1,7 +1,10 @@
 package com.example.i01002706.vokabelapp;
 
+import android.arch.persistence.db.SupportSQLiteQuery;
+import android.arch.persistence.room.Database;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +18,13 @@ class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
     private List<Category> mData = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-
+    private AppDatabase database;
     // data is passed into the constructor
     AdapterCategory(Context context) {
         this.mInflater = LayoutInflater.from(context);
+        this.database = AppDatabase.getDatabase(context);
     }
+
 
     // inflates the row layout from xml when needed
     @Override
@@ -61,6 +66,28 @@ class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder> {
     // convenience method for getting data at click position
     Category getItem(int id) {
         return mData.get(id);
+    }
+
+    void deleteItem(int id, Context context) {
+        if (database == null) {
+
+            return;
+        }
+        int id_category = getItem(id).getId();
+        database = AppDatabase.getDatabase(context);
+        CardDao cardDao = database.cardDao();
+        CardsetDao cardsetDao = database.cardsetDao();
+        CategoryDao categoryDao = database.categoryDao();
+        List<Cardset> cardsets = cardsetDao.allCardsets(id_category);
+
+        for (Cardset cardset:cardsets) {
+                cardDao.deleteQuery(cardset.getId());
+        }
+
+        cardsetDao.deleteQuery(id_category);
+
+        categoryDao.delete(getItem(id));
+        mData.remove(id);
     }
 
     // allows clicks events to be caught

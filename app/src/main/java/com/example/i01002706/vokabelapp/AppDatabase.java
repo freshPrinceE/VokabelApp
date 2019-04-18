@@ -7,7 +7,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Category.class, Cardset.class, Card.class}, version = 7)
+@Database(entities = {Category.class, Cardset.class, Card.class}, version = 9)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDao categoryDao();

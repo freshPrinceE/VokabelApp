@@ -18,10 +18,11 @@ class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHolder> {
     private List<Cardset> mData = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-
+    private AppDatabase database;
     // data is passed into the constructor
     AdapterCardset(Context context) {
         this.mInflater = LayoutInflater.from(context);
+        this.database = AppDatabase.getDatabase(context);
     }
 
     // inflates the row layout from xml when needed
@@ -71,6 +72,20 @@ class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHolder> {
     // convenience method for getting data at click position
     Cardset getItem(int id) {
         return mData.get(id);
+    }
+
+    void deleteItem(int id, Context context) {
+
+        if (database == null) {
+            return;
+        }
+        int id_cardset = getItem(id).getId();
+        database = AppDatabase.getDatabase(context);
+        CardDao cardDao = database.cardDao();
+        CardsetDao cardsetDao = database.cardsetDao();
+        cardDao.deleteQuery(id_cardset);
+        cardsetDao.delete(getItem(id));
+        mData.remove(id);
     }
 
     // allows clicks events to be caught
