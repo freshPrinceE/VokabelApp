@@ -1,9 +1,12 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
+
+import com.example.i01002706.vokabelapp.Database.Card;
 
 import java.util.List;
 
@@ -17,6 +20,9 @@ public interface CardDao {
 
     @Query("DELETE FROM Card WHERE cardset_id = :cardsetId")
     public void deleteQuery(int cardsetId);
+
+    @Update
+    public void update(Card card);
 
     @Delete
     public void delete(Card card);

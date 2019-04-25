@@ -1,4 +1,4 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Helper;
 
 
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+
+import com.example.i01002706.vokabelapp.R;
 
 abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 

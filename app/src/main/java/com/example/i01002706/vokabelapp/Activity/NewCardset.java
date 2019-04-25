@@ -1,4 +1,4 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.i01002706.vokabelapp.Activity.NewCard;
+import com.example.i01002706.vokabelapp.R;
 
 public class NewCardset extends AppCompatActivity {
 

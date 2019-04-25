@@ -1,4 +1,4 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -7,7 +7,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Category.class, Cardset.class, Card.class}, version = 9)
+@Database(entities = {Category.class, Cardset.class, Card.class}, version = 11)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CategoryDao categoryDao();
@@ -16,7 +16,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
 
-    static AppDatabase getDatabase(final Context context) {
+    public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null)    {

@@ -1,4 +1,4 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Database;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
@@ -14,7 +14,13 @@ public class Card {
     private String frage;
     private String antwort;
 
+
+
+    private int level;
+
     private int cardset_id;
+
+    private String image;
 
     @NonNull
     public int getId() {
@@ -48,6 +54,14 @@ public class Card {
     public void setCardset_id(int cardset_id) {
         this.cardset_id = cardset_id;
     }
+
+    public int getLevel() { return level; }
+
+    public void setLevel(int level) { this.level = level; }
+
+    public String getImage() { return image; }
+
+    public void setImage(String image) { this.image = image; }
 
 
 }

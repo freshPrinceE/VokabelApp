@@ -1,4 +1,4 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,14 +7,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.i01002706.vokabelapp.Activity.MainActivity;
+import com.example.i01002706.vokabelapp.Database.AppDatabase;
+import com.example.i01002706.vokabelapp.Database.Card;
+import com.example.i01002706.vokabelapp.Database.CardDao;
+import com.example.i01002706.vokabelapp.Database.Cardset;
+import com.example.i01002706.vokabelapp.Database.CardsetDao;
+import com.example.i01002706.vokabelapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewCard extends AppCompatActivity {
 
+    private static final int PICK_IMG = 100;
     private static List<Card> cards = new ArrayList<>();
     private String question;
     private String answer;
@@ -24,6 +33,7 @@ public class NewCard extends AppCompatActivity {
     private int categoryId;
     private  EditText q;
     private EditText a;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +51,6 @@ public class NewCard extends AppCompatActivity {
         name = (String) b.get("name");
         categoryId = (int) b.get("categoryID");
 
-
         TextView tv = findViewById(R.id.titleCardset);
         tv.setText(name);
 
@@ -57,6 +66,7 @@ public class NewCard extends AppCompatActivity {
                     Card card = new Card();
                     card.setAntwort(answer);
                     card.setFrage(question);
+                    card.setLevel(0);
                     cards.add(card);
                 }
                 q.setText("");
@@ -80,6 +90,7 @@ public class NewCard extends AppCompatActivity {
                     Card card = new Card();
                     card.setFrage(question);
                     card.setAntwort(answer);
+                    card.setLevel(0);
                     cards.add(card);
 
                 }
@@ -90,10 +101,10 @@ public class NewCard extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 finish();
                 startActivity(intent);
+                Toast.makeText(getBaseContext(), "New Cardset added", Toast.LENGTH_SHORT).show();
 
             }
         });
 
     }
-
 }

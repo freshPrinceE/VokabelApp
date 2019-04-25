@@ -1,9 +1,11 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+
+import com.example.i01002706.vokabelapp.Database.Cardset;
 
 import java.util.List;
 

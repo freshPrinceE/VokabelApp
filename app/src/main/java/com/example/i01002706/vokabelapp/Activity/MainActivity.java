@@ -1,4 +1,4 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Activity;
 
 import android.arch.lifecycle.LiveData;
 import android.content.DialogInterface;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +16,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import 	android.support.v7.widget.helper.ItemTouchHelper;
+
+import com.example.i01002706.vokabelapp.Activity.CardsetActivity;
+import com.example.i01002706.vokabelapp.Adapter.AdapterCategory;
+import com.example.i01002706.vokabelapp.Database.AppDatabase;
+import com.example.i01002706.vokabelapp.Database.Category;
+import com.example.i01002706.vokabelapp.Database.CategoryDao;
+import com.example.i01002706.vokabelapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,23 +41,9 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // data to populate the RecyclerView with
-/*        final Category category1 = new Category("Spanisch");
-        Category category2 = new Category("Italienisch");
-        Category category3 = new Category("Englisch");
-
-        categories.add(category1);
-        categories.add(category2);
-        categories.add(category3);*/
-
-
-        // set up the RecyclerView
-
-
 
         AppDatabase database = AppDatabase.getDatabase(this);
         categoryDao = database.categoryDao();
-
         allCategories = categoryDao.allCategories();
 
 
@@ -95,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
                 int position = viewHolder.getAdapterPosition();
                 adapter.deleteItem(position, getApplicationContext());
                 adapter.notifyDataSetChanged();
+                Toast.makeText(getBaseContext(), "Category deleted", Toast.LENGTH_SHORT).show();
             }
         });
         itemTouchhelper.attachToRecyclerView(recyclerView);
@@ -102,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
 
 
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position).getId() + " on row number " + position, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, CardsetActivity.class);
         Bundle b = new Bundle();
         b.putInt("id", adapter.getItem(position).getId());
@@ -125,10 +117,15 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
-                Category category1 = new Category();
-                category1.setTitle(m_Text);
+                if(m_Text!= null) {
+                    Category category1 = new Category();
+                    category1.setTitle(m_Text);
 
-                categoryDao.insert(category1);
+                    categoryDao.insert(category1);
+
+                }else {
+                    Toast.makeText(getBaseContext(), "Please enter a Name for the Category", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -1,4 +1,4 @@
-package com.example.i01002706.vokabelapp;
+package com.example.i01002706.vokabelapp.Activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,6 +11,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.i01002706.vokabelapp.Adapter.AdapterCardset;
+import com.example.i01002706.vokabelapp.Database.AppDatabase;
+import com.example.i01002706.vokabelapp.Database.Card;
+import com.example.i01002706.vokabelapp.Database.CardDao;
+import com.example.i01002706.vokabelapp.Database.Cardset;
+import com.example.i01002706.vokabelapp.Database.CardsetDao;
+import com.example.i01002706.vokabelapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +37,6 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         setContentView(R.layout.activity_cardset);
 
         ArrayList<Cardset> categories = new ArrayList<>();
-        /*Category category1 = new Category("Lektion1");
-        Category category2 = new Category("Lektion2");
-        Category category3 = new Category("Lektion3");
-
-        categories.add(category1);
-        categories.add(category2);
-        categories.add(category3);*/
 
 
 
@@ -43,7 +44,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         if(b.get("id")!=null){
             categoryId = (int) b.get("id");
         }
-        AppDatabase database = AppDatabase.getDatabase(this);
+        final AppDatabase database = AppDatabase.getDatabase(this);
         final CardsetDao cardsetDao = database.cardsetDao();
         cardsets = cardsetDao.allCardsets(categoryId);
 
@@ -53,7 +54,34 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         recyclerView = findViewById(R.id.cardset);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterCardset(this);
-        adapter.setClickListener(this);
+        adapter.setClickListener(new AdapterCardset.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getApplicationContext(), InCardsetActivity.class);
+                Bundle b = new Bundle();
+
+                b.putInt("cardsetId", cardsets.get(position).getId());
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onPlayButtonClick(int position) {
+                CardDao cardDao = database.cardDao();
+                List<Card> cards = cardDao.allCards(adapter.getItem(position).getId());
+                Log.d("Test:","Cardsize:" + cards.size());
+                if(!(cards.size()<=0)) {
+                    Intent intent = new Intent(getApplicationContext(), Game.class);
+                    Bundle b = new Bundle();
+
+                    b.putInt("cardsetId", cardsets.get(position).getId());
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getBaseContext(),"Cardset has no Cards", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         recyclerView.setAdapter(adapter);
         adapter.addCategory(cardsets);
         enableSwipeToDeleteAndUndo();
@@ -84,6 +112,8 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
                 int position = viewHolder.getAdapterPosition();
                 adapter.deleteItem(position, getApplicationContext());
                 adapter.notifyDataSetChanged();
+                Toast.makeText(getBaseContext(), "Cardset deleted", Toast.LENGTH_SHORT).show();
+
             }
         });
         itemTouchhelper.attachToRecyclerView(recyclerView);
@@ -95,11 +125,6 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
     }
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(this, Game.class);
-        Bundle b = new Bundle();
 
-        b.putInt("cardsetId", cardsets.get(position).getId());
-        intent.putExtras(b);
-        startActivity(intent);
     }
 }
