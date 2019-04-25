@@ -109,4 +109,8 @@ public class AdapterInCardset extends RecyclerView.Adapter<AdapterInCardset.View
     public void addCategory(List<Card> cards){
         mData = cards;
     }
+    public void addCard(Card card){
+        mData.add(card);
+        notifyDataSetChanged();
+    }
 }

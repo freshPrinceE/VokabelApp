@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
+import com.example.i01002706.vokabelapp.Database.Card;
 import com.example.i01002706.vokabelapp.Database.CardDao;
 import com.example.i01002706.vokabelapp.Database.Cardset;
 import com.example.i01002706.vokabelapp.Database.CardsetDao;
@@ -117,4 +118,5 @@ public class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHold
     public void addCategory(List<Cardset> cardsets){
         mData = cardsets;
     }
+
 }

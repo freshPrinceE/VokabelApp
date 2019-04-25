@@ -42,7 +42,8 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Category category = mData.get(position);
-        holder.myTextView.setText(category.getTitle());
+        holder.categoryName.setText(category.getTitle());
+        holder.categorySize.setText(database.cardsetDao().allCardsets(category.getId()).size()+ " Cardsets");
     }
 
     // total number of rows
@@ -54,11 +55,12 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
-
+        TextView categoryName;
+        TextView categorySize;
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.categoryName);
+            categoryName = itemView.findViewById(R.id.categoryName);
+            categorySize = itemView.findViewById(R.id.categorySize);
             itemView.setOnClickListener(this);
         }
 
@@ -107,4 +109,5 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     public void addCategory(List<Category> category){
         mData = category;
     }
+    public void addCategoryOne(Category category){mData.add(category); notifyDataSetChanged();}
 }

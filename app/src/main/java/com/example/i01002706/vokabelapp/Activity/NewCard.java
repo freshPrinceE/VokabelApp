@@ -98,8 +98,8 @@ public class NewCard extends AppCompatActivity {
                     card.setCardset_id(id);
                     cardDao.insert(card);
                 }
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                finish();
+                Intent intent = new Intent(getBaseContext(), CardsetActivity.class);
+                intent.putExtra("id", categoryId);
                 startActivity(intent);
                 Toast.makeText(getBaseContext(), "New Cardset added", Toast.LENGTH_SHORT).show();
 

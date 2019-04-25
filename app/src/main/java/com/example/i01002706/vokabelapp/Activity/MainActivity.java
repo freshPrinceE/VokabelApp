@@ -1,6 +1,8 @@
 package com.example.i01002706.vokabelapp.Activity;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import 	android.support.v7.widget.helper.ItemTouchHelper;
 
@@ -33,8 +36,9 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
     private String m_Text="";
     List<Category> categories = new ArrayList<>();
     private CategoryDao categoryDao;
-    private LiveData<List<Category>> allCategories;
+    //private LiveData<List<Category>> allCategories;
     private  RecyclerView recyclerView;
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,25 +48,23 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
 
         AppDatabase database = AppDatabase.getDatabase(this);
         categoryDao = database.categoryDao();
-        allCategories = categoryDao.allCategories();
-
-
-
-        allCategories.observe(this, new android.arch.lifecycle.Observer<List<Category>>() {
-            @Override
-            public void onChanged(@Nullable List<Category> categoryList) {
-                adapter.addCategory(categoryList);
-            }
-        });
+        categories = categoryDao.allCategories();
+        //allCategories = categoryDao.allCategories();
+        text = findViewById(R.id.text);
 
         recyclerView = findViewById(R.id.categories);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterCategory(this);
+        adapter.addCategory(categories);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         enableSwipeToDeleteAndUndo();
         FloatingActionButton myFab = findViewById(R.id.floatingButton);
-
+        if(adapter.getItemCount()<=0){
+            text.setText("No Categories found, create some new!");
+        }else{
+            text.setText("");
+        }
         myFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
                 adapter.deleteItem(position, getApplicationContext());
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getBaseContext(), "Category deleted", Toast.LENGTH_SHORT).show();
+
             }
         });
         itemTouchhelper.attachToRecyclerView(recyclerView);
@@ -122,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
                     category1.setTitle(m_Text);
 
                     categoryDao.insert(category1);
+                    adapter.addCategoryOne(category1);
+                    adapter.notifyDataSetChanged();
 
                 }else {
                     Toast.makeText(getBaseContext(), "Please enter a Name for the Category", Toast.LENGTH_SHORT).show();

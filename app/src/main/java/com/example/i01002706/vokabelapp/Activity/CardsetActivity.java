@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.i01002706.vokabelapp.Adapter.AdapterCardset;
@@ -30,6 +31,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
     private int categoryId;
     private List<Cardset> cardsets = new ArrayList<>();
     private RecyclerView recyclerView;
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,12 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         recyclerView.setAdapter(adapter);
         adapter.addCategory(cardsets);
         enableSwipeToDeleteAndUndo();
+        text = findViewById(R.id.text);
+        if(adapter.getItemCount()<=0){
+            text.setText("No Cardsets found. Create some new!");
+        }else{
+            text.setText("");
+        }
         FloatingActionButton myFab = findViewById(R.id.floatingButton2);
         myFab.setOnClickListener(new View.OnClickListener() {
             @Override
