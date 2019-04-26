@@ -20,6 +20,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:clickable="true"
+        android:focusable="true"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
     <android.support.v7.widget.RecyclerView

@@ -24,7 +24,6 @@ public class Game extends AppCompatActivity {
     private List<Card> cards = new ArrayList<>();
     private int count;
     private int count2 = 0;
-    private int bound = 100;
     private Card currentCard = new Card();
     private TextView answer;
     private Button gewusst;
@@ -173,6 +172,7 @@ public class Game extends AppCompatActivity {
     }
     private void chooseCard(){
         Random r = new Random();
+        int bound = 100;
         int level = r.nextInt(bound);
         if(count2 == 5 ||(level >= 95 && level < 100)){
             if(level4.size()<=0){

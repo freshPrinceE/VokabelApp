@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
     private CategoryDao categoryDao;
     //private LiveData<List<Category>> allCategories;
     private  RecyclerView recyclerView;
-    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
         categoryDao = database.categoryDao();
         categories = categoryDao.allCategories();
         //allCategories = categoryDao.allCategories();
-        text = findViewById(R.id.text);
+        TextView text = findViewById(R.id.text);
 
         recyclerView = findViewById(R.id.categories);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

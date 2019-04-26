@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InCardsetActivity extends AppCompatActivity {
-    private List<Card> cards = new ArrayList<>();
     private RecyclerView recyclerView;
     private AdapterInCardset adapter;
     private int cardsetId;
@@ -44,7 +43,7 @@ public class InCardsetActivity extends AppCompatActivity {
         }
         AppDatabase database = AppDatabase.getDatabase(this);
         CardDao cardDao = database.cardDao();
-        cards = cardDao.allCards(cardsetId);
+        List<Card> cards = cardDao.allCards(cardsetId);
         recyclerView = findViewById(R.id.incardset);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterInCardset(this);

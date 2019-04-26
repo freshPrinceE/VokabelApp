@@ -19,8 +19,8 @@
         <activity android:name=".Activity.CardsetActivity" />
         <activity android:name=".Activity.NewCardset" />
         <activity android:name=".Activity.NewCard" />
-        <activity android:name=".Activity.Game"></activity>
-        <activity android:name=".Activity.InCardsetActivity"></activity>
+        <activity android:name=".Activity.Game" />
+        <activity android:name=".Activity.InCardsetActivity"/>
 
     </application>
 

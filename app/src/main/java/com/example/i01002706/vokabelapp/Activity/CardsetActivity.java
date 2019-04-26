@@ -32,7 +32,6 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
     private int categoryId;
     private List<Cardset> cardsets = new ArrayList<>();
     private RecyclerView recyclerView;
-    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +92,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         recyclerView.setAdapter(adapter);
         adapter.addCategory(cardsets);
         enableSwipeToDeleteAndUndo();
-        text = findViewById(R.id.text);
+        TextView text = findViewById(R.id.text);
         if(adapter.getItemCount()<=0){
             text.setText("No Cardsets found. Create some new!");
         }else{
