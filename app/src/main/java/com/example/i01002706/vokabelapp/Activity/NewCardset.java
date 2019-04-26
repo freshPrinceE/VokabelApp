@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.i01002706.vokabelapp.Activity.NewCard;
+import com.example.i01002706.vokabelapp.Database.AppDatabase;
+import com.example.i01002706.vokabelapp.Database.Cardset;
+import com.example.i01002706.vokabelapp.Database.CardsetDao;
 import com.example.i01002706.vokabelapp.R;
 
 public class NewCardset extends AppCompatActivity {
@@ -18,6 +21,7 @@ public class NewCardset extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.new_cardset);
+            final AppDatabase database = AppDatabase.getDatabase(getApplicationContext());
             Bundle b = getIntent().getExtras();
             if(b.get("categoryID")!=null) {
                 categoryID = (int) b.get("categoryID");
@@ -30,8 +34,14 @@ public class NewCardset extends AppCompatActivity {
                     Bundle b = new Bundle();
                     EditText nameCardset = findViewById(R.id.nameCardset);
                     String name = nameCardset.getText().toString();
+                    CardsetDao cardsetDao = database.cardsetDao();
+                    Cardset cardset = new Cardset();
+                    cardset.setCategoryId(categoryID);
+                    cardset.setName(name);
+                    int id = (int) cardsetDao.insert(cardset);
                     b.putString("name", name);
                     b.putInt("categoryID", categoryID);
+                    b.putInt("cardsetId", id);
                     intent.putExtras(b);
                     startActivity(intent);
 

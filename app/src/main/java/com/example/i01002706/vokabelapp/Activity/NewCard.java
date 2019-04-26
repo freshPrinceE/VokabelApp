@@ -32,7 +32,7 @@ public class NewCard extends AppCompatActivity {
     private int categoryId;
     private  EditText q;
     private EditText a;
-
+    private int cardsetId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class NewCard extends AppCompatActivity {
         Log.d("Test", "Question: " + question + "  Answer: " + answer);
         Button nextCard = findViewById(R.id.nextCard);
         Button finish = findViewById(R.id.finish);
-        AppDatabase database = AppDatabase.getDatabase(this);
+        AppDatabase database = AppDatabase.getDatabase(getApplicationContext());
         cardDao = database.cardDao();
         cardsetDao = database.cardsetDao();
         Bundle b = getIntent().getExtras();
@@ -53,7 +53,9 @@ public class NewCard extends AppCompatActivity {
         if(b.get("categoryID")!=null) {
             categoryId = (int) b.get("categoryID");
         }
-
+        if(b.get("cardsetId")!=null) {
+            cardsetId = (int) b.get("cardsetId");
+        }
         TextView tv = findViewById(R.id.titleCardset);
         tv.setText(name);
 
@@ -85,10 +87,10 @@ public class NewCard extends AppCompatActivity {
                 question = q.getText().toString();
                 a = findViewById(R.id.answer);
                 answer = a.getText().toString();
-                Cardset cardset = new Cardset();
+                /*Cardset cardset = new Cardset();
                 cardset.setName(name);
                 cardset.setCategoryId(categoryId);
-                long id = cardsetDao.insert(cardset);
+                long id = cardsetDao.insert(cardset);*/
                 if(!question.equals("")&& !answer.equals("")){
                     Card card = new Card();
                     card.setFrage(question);
@@ -98,7 +100,7 @@ public class NewCard extends AppCompatActivity {
 
                 }
                 for (Card card : cards){
-                    card.setCardset_id((int)id);
+                    card.setCardset_id(cardsetId);
                     cardDao.insert(card);
                 }
                 cards.clear();

@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface CardDao {
     @Insert
-    public void insert(Card card);
+    public long insert(Card card);
 
     @Query("SELECT * FROM Card WHERE cardset_id = :cardsetId")
     public List<Card> allCards(int cardsetId);
@@ -22,7 +22,7 @@ public interface CardDao {
     public void deleteQuery(int cardsetId);
 
     @Update
-    public void update(Card card);
+    public int update(Card card);
 
     @Delete
     public void delete(Card card);

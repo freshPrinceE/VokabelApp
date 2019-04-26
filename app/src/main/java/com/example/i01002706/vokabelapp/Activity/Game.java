@@ -1,10 +1,12 @@
 package com.example.i01002706.vokabelapp.Activity;
 
 import android.annotation.TargetApi;
+import android.graphics.Point;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -75,8 +77,12 @@ public class Game extends AppCompatActivity {
         question.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         gewusst = findViewById(R.id.gewusst);
         nichtGewusst = findViewById(R.id.nichtGewusst);
-        gewusst.setWidth(getWindowManager().getDefaultDisplay().getWidth()/2);
-        gewusst.setHeight(getWindowManager().getDefaultDisplay().getHeight()/4);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        gewusst.setWidth(size.x/2);
+        gewusst.setHeight(size.y/4);
         nichtGewusst.setWidth(getWindowManager().getDefaultDisplay().getWidth()/2);
         nichtGewusst.setHeight(getWindowManager().getDefaultDisplay().getHeight()/4);
 
@@ -87,30 +93,34 @@ public class Game extends AppCompatActivity {
         gewusst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Eintrag in der Tabelle
+                Log.d("Current","Card: " + currentCard.getLevel());
                 if(currentCard.getLevel()<4) {
                     currentCard.setLevel(currentCard.getLevel() + 1);
                     cardDao.update(currentCard);
 
                 }
-                cards = cardDao.allCards(cardsetId);
+                //cards = cardDao.allCards(cardsetId);
                 defineLevels(cards);
                 chooseCard();
                 loadData();
+
             }
         });
         nichtGewusst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(currentCard.getLevel()>0) {
                     currentCard.setLevel(currentCard.getLevel() - 1);
-                    cardDao.update(currentCard);
+                    long id = cardDao.update(currentCard);
+
                 }
                 //Eintrag in der Tabelle
-                cards = cardDao.allCards(cardsetId);
+                //cards = cardDao.allCards(cardsetId);
                 defineLevels(cards);
                 chooseCard();
                 loadData();
+
             }
         });
         View view = findViewById(R.id.touch);
