@@ -19,6 +19,7 @@ import com.example.i01002706.vokabelapp.Database.Card;
 import com.example.i01002706.vokabelapp.Database.CardDao;
 import com.example.i01002706.vokabelapp.Database.Cardset;
 import com.example.i01002706.vokabelapp.Database.CardsetDao;
+import com.example.i01002706.vokabelapp.Helper.SwipeToDeleteCallback;
 import com.example.i01002706.vokabelapp.R;
 
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cardset);
-
         ArrayList<Cardset> categories = new ArrayList<>();
 
 
@@ -45,6 +45,10 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         Bundle b = getIntent().getExtras();
         if(b.get("id")!=null){
             categoryId = (int) b.get("id");
+        }
+        if(b.get("title")!=null){
+            String title = (String) b.get("title");
+            setTitle(title);
         }
         final AppDatabase database = AppDatabase.getDatabase(this);
         final CardsetDao cardsetDao = database.cardsetDao();
@@ -63,6 +67,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
                 Bundle b = new Bundle();
 
                 b.putInt("cardsetId", cardsets.get(position).getId());
+                b.putString("title", cardsets.get(position).getName());
                 intent.putExtras(b);
                 startActivity(intent);
             }
@@ -77,6 +82,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
                     Bundle b = new Bundle();
 
                     b.putInt("cardsetId", cardsets.get(position).getId());
+                    b.putString("title", cardsets.get(position).getName());
                     intent.putExtras(b);
                     startActivity(intent);
                 }else{
@@ -107,24 +113,18 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
     }
     private void enableSwipeToDeleteAndUndo() {
 
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
-
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getApplicationContext()) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                Log.d("Cardtest", "Test2");
-
                 int position = viewHolder.getAdapterPosition();
                 adapter.deleteItem(position, getApplicationContext());
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getBaseContext(), "Cardset deleted", Toast.LENGTH_SHORT).show();
 
             }
-        });
-        itemTouchhelper.attachToRecyclerView(recyclerView);
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
     private void changeActivity(){
         Intent intent = new Intent(this, NewCardset.class);
@@ -133,6 +133,12 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
     }
     @Override
     public void onItemClick(View view, int position) {
+
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
 
     }
 }

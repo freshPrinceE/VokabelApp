@@ -1,13 +1,9 @@
 package com.example.i01002706.vokabelapp.Activity;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +21,7 @@ import com.example.i01002706.vokabelapp.Adapter.AdapterCategory;
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
 import com.example.i01002706.vokabelapp.Database.Category;
 import com.example.i01002706.vokabelapp.Database.CategoryDao;
+import com.example.i01002706.vokabelapp.Helper.SwipeToDeleteCallback;
 import com.example.i01002706.vokabelapp.R;
 
 import java.util.ArrayList;
@@ -34,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
 
     private AdapterCategory adapter;
     private String m_Text="";
-    List<Category> categories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
     private CategoryDao categoryDao;
     //private LiveData<List<Category>> allCategories;
     private  RecyclerView recyclerView;
@@ -76,14 +73,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
 
     }
     private void enableSwipeToDeleteAndUndo() {
-
-
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
-
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getApplicationContext()) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 int position = viewHolder.getAdapterPosition();
@@ -92,8 +82,10 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
                 Toast.makeText(getBaseContext(), "Category deleted", Toast.LENGTH_SHORT).show();
 
             }
-        });
-        itemTouchhelper.attachToRecyclerView(recyclerView);
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
 
@@ -101,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
         Intent intent = new Intent(this, CardsetActivity.class);
         Bundle b = new Bundle();
         b.putInt("id", adapter.getItem(position).getId());
+        b.putString("title", adapter.getItem(position).getTitle());
         intent.putExtras(b);
         startActivity(intent);
     }
@@ -120,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
-                if(m_Text!= null) {
+                if(m_Text!= "") {
                     Category category1 = new Category();
                     category1.setTitle(m_Text);
 
@@ -142,4 +135,10 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
     return builder;
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
+
+    }
 }

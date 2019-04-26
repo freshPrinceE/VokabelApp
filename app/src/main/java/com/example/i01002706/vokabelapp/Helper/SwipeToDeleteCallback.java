@@ -19,7 +19,7 @@ import com.example.i01002706.vokabelapp.R;
 
 abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 
-    Context mContext;
+    private Context mContext;
     private Paint mClearPaint;
     private ColorDrawable mBackground;
     private int backgroundColor;
@@ -28,7 +28,7 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     private int intrinsicHeight;
 
 
-    SwipeToDeleteCallback(Context context) {
+    public SwipeToDeleteCallback(Context context) {
         mContext = context;
         mBackground = new ColorDrawable();
         backgroundColor = Color.parseColor("#b80f0a");

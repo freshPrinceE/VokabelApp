@@ -1,7 +1,6 @@
 package com.example.i01002706.vokabelapp.Activity;
 
 import android.annotation.TargetApi;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,8 +23,9 @@ public class Game extends AppCompatActivity {
     private int cardsetId;
     private List<Card> cards = new ArrayList<>();
     private int count;
+    private int count2 = 0;
     private int bound = 100;
-    private Card currentCard;
+    private Card currentCard = new Card();
     private TextView answer;
     private Button gewusst;
     private Button nichtGewusst;
@@ -49,7 +49,10 @@ public class Game extends AppCompatActivity {
         if(b.get("cardsetId")!=null){
             cardsetId = (int) b.get("cardsetId");
         }
-
+        if(b.get("title")!=null){
+            String title = (String) b.get("title");
+            setTitle(title);
+        }
         count = 0;
         final AppDatabase database = AppDatabase.getDatabase(this);
         final CardDao cardDao = database.cardDao();
@@ -93,8 +96,8 @@ public class Game extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(currentCard.getLevel()>0) {
-                    cardDao.update(currentCard);
                     currentCard.setLevel(currentCard.getLevel() - 1);
+                    cardDao.update(currentCard);
                 }
                 //Eintrag in der Tabelle
                 cards = cardDao.allCards(cardsetId);
@@ -171,71 +174,101 @@ public class Game extends AppCompatActivity {
     private void chooseCard(){
         Random r = new Random();
         int level = r.nextInt(bound);
-        if(level >= 0 && level <40){
-            if(level0.size()<=0){
+        if(count2 == 5 ||(level >= 95 && level < 100)){
+            if(level4.size()<=0){
+                count2 = 1;
                 chooseCard();
                 return;
             }
-            Card card = level0.get( r.nextInt(level0.size()));
-            if(!(currentCard==card)) {
+            Card card = level4.get( r.nextInt(level4.size()));
+            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
+
+            if(!(currentCard.equals(card))) {
                 currentCard = card;
+                count = 0;
+                return;
             }else{
+                count2 = 1;
                 chooseCard();
                 return;
             }
-        }
-        else if(level >= 40 && level < 65){
-            if(level1.size()<=0){
-                chooseCard();
-                return;
-            }
-            Card card = level1.get( r.nextInt(level1.size()));
-            if(!(currentCard==card)) {
-                currentCard = card;
-            }else{
-                chooseCard();
-                return;
-            }
-        }
-        else if(level >= 65 && level < 80){
-            if(level2.size()<=0){
-                chooseCard();
-                return;
-            }
-            Card card = level2.get( r.nextInt(level2.size()));
-            if(!(currentCard==card)) {
-                currentCard = card;
-            }else{
-                chooseCard();
-                return;
-            }
-        }
-        else if(level >= 80 && level < 95){
+        }else if(count2 == 4 || (level >= 80 && level < 95)){
             if(level3.size()<=0){
+                count2 = 5;
                 chooseCard();
                 return;
             }
 
             Card card = level3.get( r.nextInt(level3.size()));
-            if(!(currentCard==card)) {
+            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
+
+            if(!(currentCard.equals(card))) {
                 currentCard = card;
+                count = 0;
+                return;
+
             }else{
+                count2 = 5;
                 chooseCard();
                 return;
             }
-        }
-        else if(level >= 95 && level < 100){
-            if(level4.size()<=0){
+        }else if(count2 == 3 ||(level >= 65 && level < 80)){
+            if(level2.size()<=0){
+                count2 = 4;
                 chooseCard();
                 return;
             }
-            Card card = level4.get( r.nextInt(level4.size()));
-            if(!(currentCard==card)) {
+            Card card = level2.get( r.nextInt(level2.size()));
+            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
+
+            if(!(currentCard.equals(card))) {
                 currentCard = card;
+                count = 0;
+                return;
+
             }else{
+                count2 = 4;
+                chooseCard();
+                return;
+            }
+        }else if(count2 == 2 || (level >= 40 && level < 65)){
+            if(level1.size()<=0){
+                count2 = 3;
+                chooseCard();
+                return;
+            }
+            Card card = level1.get( r.nextInt(level1.size()));
+            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
+
+            if(!(currentCard.equals(card))) {
+                currentCard = card;
+                count2 = 0;
+                return;
+
+            }else{
+                count2 = 3;
+                chooseCard();
+                return;
+            }
+        }else if(count2 == 1 || (level >= 0 && level <40) ){
+            if(level0.size()<=0){
+                count2 = 2;
+                chooseCard();
+                return;
+            }
+            Card card = level0.get( r.nextInt(level0.size()));
+            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
+
+            if(!(currentCard.equals(card))) {
+                currentCard = card;
+                count2 = 0;
+                return;
+            }else{
+                count2 = 2;
                 chooseCard();
                 return;
             }
         }
     }
+
 }

@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.i01002706.vokabelapp.Activity.MainActivity;
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
 import com.example.i01002706.vokabelapp.Database.Card;
 import com.example.i01002706.vokabelapp.Database.CardDao;
@@ -48,8 +47,12 @@ public class NewCard extends AppCompatActivity {
         cardDao = database.cardDao();
         cardsetDao = database.cardsetDao();
         Bundle b = getIntent().getExtras();
-        name = (String) b.get("name");
-        categoryId = (int) b.get("categoryID");
+        if(b.get("name")!=null) {
+            name = (String) b.get("name");
+        }
+        if(b.get("categoryID")!=null) {
+            categoryId = (int) b.get("categoryID");
+        }
 
         TextView tv = findViewById(R.id.titleCardset);
         tv.setText(name);

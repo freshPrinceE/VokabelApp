@@ -17,6 +17,7 @@ import com.example.i01002706.vokabelapp.Adapter.AdapterInCardset;
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
 import com.example.i01002706.vokabelapp.Database.Card;
 import com.example.i01002706.vokabelapp.Database.CardDao;
+import com.example.i01002706.vokabelapp.Helper.SwipeToDeleteCallback;
 import com.example.i01002706.vokabelapp.R;
 
 import java.util.ArrayList;
@@ -36,6 +37,10 @@ public class InCardsetActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b.get("cardsetId")!=null){
             cardsetId = (int) b.get("cardsetId");
+        }
+        if(b.get("title")!=null){
+            String title = (String) b.get("title");
+            setTitle(title);
         }
         AppDatabase database = AppDatabase.getDatabase(this);
         CardDao cardDao = database.cardDao();
@@ -58,9 +63,9 @@ public class InCardsetActivity extends AppCompatActivity {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         View dialog_layout = getLayoutInflater().inflate(R.layout.dialog_layout, null);
         // Create the text field in the alert dialog...
-        final EditText text1 = (EditText) dialog_layout.findViewById(R.id.text1);
-        final EditText text2 = (EditText) dialog_layout.findViewById(R.id.text2);
-        Button add = (Button) dialog_layout.findViewById(R.id.button);
+        final EditText text1 = dialog_layout.findViewById(R.id.text1);
+        final EditText text2 = dialog_layout.findViewById(R.id.text2);
+        Button add = dialog_layout.findViewById(R.id.button);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,12 +90,7 @@ public class InCardsetActivity extends AppCompatActivity {
     }
     private void enableSwipeToDeleteAndUndo() {
 
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
-
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getApplicationContext()) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 int position = viewHolder.getAdapterPosition();
@@ -99,7 +99,14 @@ public class InCardsetActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Card deleted", Toast.LENGTH_SHORT).show();
 
             }
-        });
-        itemTouchhelper.attachToRecyclerView(recyclerView);
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
+
     }
 }

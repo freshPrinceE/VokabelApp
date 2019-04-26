@@ -12,13 +12,16 @@ import com.example.i01002706.vokabelapp.R;
 
 public class NewCardset extends AppCompatActivity {
 
+        private int categoryID;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.new_cardset);
             Bundle b = getIntent().getExtras();
-            final int categoryID = (int) b.get("categoryID");
+            if(b.get("categoryID")!=null) {
+                categoryID = (int) b.get("categoryID");
+            }
             Button next = findViewById(R.id.next);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -28,8 +31,8 @@ public class NewCardset extends AppCompatActivity {
                     EditText nameCardset = findViewById(R.id.nameCardset);
                     String name = nameCardset.getText().toString();
                     b.putString("name", name);
+                    b.putInt("categoryID", categoryID);
                     intent.putExtras(b);
-                    intent.putExtra("categoryID", categoryID);
                     startActivity(intent);
 
                 }

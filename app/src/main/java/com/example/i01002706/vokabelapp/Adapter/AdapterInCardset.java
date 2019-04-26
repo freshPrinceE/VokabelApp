@@ -22,7 +22,7 @@ public class AdapterInCardset extends RecyclerView.Adapter<AdapterInCardset.View
     private LayoutInflater mInflater;
     private OnItemClickListener onClickListener;
 
-    public interface OnItemClickListener{
+    interface OnItemClickListener{
         void onItemClick(int position);
         void onPlayButtonClick(int position);
     }
