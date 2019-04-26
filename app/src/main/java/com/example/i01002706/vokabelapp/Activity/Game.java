@@ -24,12 +24,13 @@ public class Game extends AppCompatActivity {
     private List<Card> cards = new ArrayList<>();
     private int count;
     private int count2 = 0;
-    private Card currentCard = new Card();
+    private Card currentCard;
     private TextView answer;
     private Button gewusst;
     private Button nichtGewusst;
     //private ImageView image;
     private TextView question;
+    private TextView level;
     private List<Card> level0= new ArrayList<>();
     private List<Card> level1= new ArrayList<>();
     private List<Card> level2= new ArrayList<>();
@@ -53,6 +54,10 @@ public class Game extends AppCompatActivity {
             setTitle(title);
         }
         count = 0;
+        currentCard = new Card();
+        currentCard.setFrage("");
+        currentCard.setAntwort("");
+        currentCard.setLevel(0);
         final AppDatabase database = AppDatabase.getDatabase(this);
         final CardDao cardDao = database.cardDao();
         cards = cardDao.allCards(cardsetId);
@@ -60,6 +65,7 @@ public class Game extends AppCompatActivity {
         chooseCard();
         question = findViewById(R.id.gameQuestion);
         answer = findViewById(R.id.gameAnswer);
+        level = findViewById(R.id.level);
         //image = findViewById(R.id.imageView2);
         answer.setText("?");
         //answer.setTextSize(40);
@@ -76,6 +82,8 @@ public class Game extends AppCompatActivity {
 
         gewusst.setVisibility(View.INVISIBLE);
         nichtGewusst.setVisibility(View.INVISIBLE);
+
+        level.setText("Level" + currentCard.getLevel());
         gewusst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +153,7 @@ public class Game extends AppCompatActivity {
 
 
         answer.setText("?");
+        level.setText("Level "+currentCard.getLevel());
         question.setText(currentCard.getFrage());
         gewusst = findViewById(R.id.gewusst);
         nichtGewusst = findViewById(R.id.nichtGewusst);
@@ -192,10 +201,10 @@ public class Game extends AppCompatActivity {
             chooseFromLevel1();
         }else{
             Card card = level0.get( r.nextInt(level0.size()));
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-            }else{
+            if((currentCard.getFrage().equals(card.getFrage()))) {
                 chooseCard();
+            }else{
+                currentCard = card;
             }
         }
     }
@@ -205,10 +214,10 @@ public class Game extends AppCompatActivity {
             chooseFromLevel2();
         }else{
             Card card = level1.get( r.nextInt(level1.size()));
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-            }else{
+            if((currentCard.getFrage().equals(card.getFrage()))) {
                 chooseCard();
+            }else{
+                currentCard = card;
             }
         }
     }
@@ -218,10 +227,10 @@ public class Game extends AppCompatActivity {
             chooseFromLevel3();
         }else{
             Card card = level2.get( r.nextInt(level2.size()));
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-            }else{
+            if((currentCard.getFrage().equals(card.getFrage()))) {
                 chooseCard();
+            }else{
+                currentCard = card;
             }
         }
     }
@@ -231,10 +240,10 @@ public class Game extends AppCompatActivity {
             chooseFromLevel4();
         }else{
             Card card = level3.get( r.nextInt(level3.size()));
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-            }else{
+            if((currentCard.getFrage().equals(card.getFrage()))) {
                 chooseCard();
+            }else{
+                currentCard = card;
             }
         }
     }
@@ -244,10 +253,10 @@ public class Game extends AppCompatActivity {
             chooseFromLevel0();
         }else{
             Card card = level4.get( r.nextInt(level4.size()));
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-            }else{
+            if((currentCard.getFrage().equals(card.getFrage()))) {
                 chooseCard();
+            }else{
+                currentCard = card;
             }
         }
     }
