@@ -175,100 +175,80 @@ public class Game extends AppCompatActivity {
         int bound = 100;
         int level = r.nextInt(bound);
         if(count2 == 5 ||(level >= 95 && level < 100)){
-            if(level4.size()<=0){
-                count2 = 1;
-                chooseCard();
-                return;
-            }
-            Card card = level4.get( r.nextInt(level4.size()));
-            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
-
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-                count = 0;
-                return;
-            }else{
-                count2 = 1;
-                chooseCard();
-                return;
-            }
+            chooseFromLevel4();
         }else if(count2 == 4 || (level >= 80 && level < 95)){
-            if(level3.size()<=0){
-                count2 = 5;
-                chooseCard();
-                return;
-            }
-
-            Card card = level3.get( r.nextInt(level3.size()));
-            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
-
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-                count = 0;
-                return;
-
-            }else{
-                count2 = 5;
-                chooseCard();
-                return;
-            }
+            chooseFromLevel3();
         }else if(count2 == 3 ||(level >= 65 && level < 80)){
-            if(level2.size()<=0){
-                count2 = 4;
-                chooseCard();
-                return;
-            }
-            Card card = level2.get( r.nextInt(level2.size()));
-            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
-
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-                count = 0;
-                return;
-
-            }else{
-                count2 = 4;
-                chooseCard();
-                return;
-            }
+            chooseFromLevel2();
         }else if(count2 == 2 || (level >= 40 && level < 65)){
-            if(level1.size()<=0){
-                count2 = 3;
-                chooseCard();
-                return;
-            }
-            Card card = level1.get( r.nextInt(level1.size()));
-            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
-
-            if(!(currentCard.equals(card))) {
-                currentCard = card;
-                count2 = 0;
-                return;
-
-            }else{
-                count2 = 3;
-                chooseCard();
-                return;
-            }
+            chooseFromLevel1();
         }else if(count2 == 1 || (level >= 0 && level <40) ){
-            if(level0.size()<=0){
-                count2 = 2;
-                chooseCard();
-                return;
-            }
+            chooseFromLevel0();
+        }
+    }
+    private void chooseFromLevel0(){
+        Random r = new Random();
+        if(level0.size()<=0){
+            chooseFromLevel1();
+        }else{
             Card card = level0.get( r.nextInt(level0.size()));
-            Log.d("Level","CurrentCard " + currentCard.getFrage()+"  Random "+card.getFrage());
-
             if(!(currentCard.equals(card))) {
                 currentCard = card;
-                count2 = 0;
-                return;
             }else{
-                count2 = 2;
                 chooseCard();
-                return;
             }
         }
     }
-
+    private void chooseFromLevel1(){
+        Random r = new Random();
+        if(level1.size()<=0){
+            chooseFromLevel2();
+        }else{
+            Card card = level1.get( r.nextInt(level1.size()));
+            if(!(currentCard.equals(card))) {
+                currentCard = card;
+            }else{
+                chooseCard();
+            }
+        }
+    }
+    private void chooseFromLevel2(){
+        Random r = new Random();
+        if(level2.size()<=0){
+            chooseFromLevel3();
+        }else{
+            Card card = level2.get( r.nextInt(level2.size()));
+            if(!(currentCard.equals(card))) {
+                currentCard = card;
+            }else{
+                chooseCard();
+            }
+        }
+    }
+    private void chooseFromLevel3(){
+        Random r = new Random();
+        if(level3.size()<=0){
+            chooseFromLevel4();
+        }else{
+            Card card = level3.get( r.nextInt(level3.size()));
+            if(!(currentCard.equals(card))) {
+                currentCard = card;
+            }else{
+                chooseCard();
+            }
+        }
+    }
+    private void chooseFromLevel4(){
+        Random r = new Random();
+        if(level4.size()<=0){
+            chooseFromLevel0();
+        }else{
+            Card card = level4.get( r.nextInt(level4.size()));
+            if(!(currentCard.equals(card))) {
+                currentCard = card;
+            }else{
+                chooseCard();
+            }
+        }
+    }
 }

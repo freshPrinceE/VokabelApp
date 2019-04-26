@@ -11,6 +11,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.i01002706.vokabelapp.Adapter.AdapterInCardset;
@@ -28,6 +29,8 @@ public class InCardsetActivity extends AppCompatActivity {
     private AdapterInCardset adapter;
     private int cardsetId;
     private AppDatabase database;
+    private TextView text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,7 @@ public class InCardsetActivity extends AppCompatActivity {
             String title = (String) b.get("title");
             setTitle(title);
         }
+        text = findViewById(R.id.text);
         AppDatabase database = AppDatabase.getDatabase(this);
         CardDao cardDao = database.cardDao();
         List<Card> cards = cardDao.allCards(cardsetId);
@@ -50,6 +54,10 @@ public class InCardsetActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.addCategory(cards);
         enableSwipeToDeleteAndUndo();
+        text.setText("");
+        if(adapter.getItemCount()<=0){
+            text.setText("No Cards found, add some new!");
+        }
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +80,7 @@ public class InCardsetActivity extends AppCompatActivity {
                 String answer = text2.getText().toString();
                 addCard(question, answer);
                 alertDialog.dismiss();
+                text.setText("");
             }
         });
         alertDialog.setView(dialog_layout);
@@ -96,7 +105,9 @@ public class InCardsetActivity extends AppCompatActivity {
                 adapter.deleteItem(position, getApplicationContext());
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getBaseContext(), "Card deleted", Toast.LENGTH_SHORT).show();
-
+                if(adapter.getItemCount()<=0){
+                    text.setText("No Cards found, add some new!");
+                }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);

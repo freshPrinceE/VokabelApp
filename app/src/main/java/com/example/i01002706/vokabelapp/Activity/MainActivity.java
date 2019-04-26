@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
     private CategoryDao categoryDao;
     //private LiveData<List<Category>> allCategories;
     private  RecyclerView recyclerView;
-
+    private TextView text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
         categoryDao = database.categoryDao();
         categories = categoryDao.allCategories();
         //allCategories = categoryDao.allCategories();
-        TextView text = findViewById(R.id.text);
+        text = findViewById(R.id.text);
 
         recyclerView = findViewById(R.id.categories);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,7 +79,9 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
                 adapter.deleteItem(position, getApplicationContext());
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getBaseContext(), "Category deleted", Toast.LENGTH_SHORT).show();
-
+                if(adapter.getItemCount()<=0){
+                    text.setText("No Categories found, create some new!");
+                }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
@@ -112,13 +114,14 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
-                if(m_Text!= "") {
+                if(!m_Text.equals("")) {
                     Category category1 = new Category();
                     category1.setTitle(m_Text);
 
                     categoryDao.insert(category1);
                     adapter.addCategoryOne(category1);
                     adapter.notifyDataSetChanged();
+                    text.setText("");
 
                 }else {
                     Toast.makeText(getBaseContext(), "Please enter a Name for the Category", Toast.LENGTH_SHORT).show();

@@ -88,7 +88,7 @@ public class NewCard extends AppCompatActivity {
                 Cardset cardset = new Cardset();
                 cardset.setName(name);
                 cardset.setCategoryId(categoryId);
-                int id = (int) cardsetDao.insert(cardset);
+                long id = cardsetDao.insert(cardset);
                 if(!question.equals("")&& !answer.equals("")){
                     Card card = new Card();
                     card.setFrage(question);
@@ -98,9 +98,10 @@ public class NewCard extends AppCompatActivity {
 
                 }
                 for (Card card : cards){
-                    card.setCardset_id(id);
+                    card.setCardset_id((int)id);
                     cardDao.insert(card);
                 }
+                cards.clear();
                 Intent intent = new Intent(getBaseContext(), CardsetActivity.class);
                 intent.putExtra("id", categoryId);
                 startActivity(intent);
