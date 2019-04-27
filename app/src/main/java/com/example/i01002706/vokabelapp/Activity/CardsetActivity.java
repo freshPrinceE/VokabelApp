@@ -60,6 +60,8 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterCardset(this);
         adapter.setClickListener(new AdapterCardset.OnItemClickListener() {
+
+            //ClickListener für die Cardsets im Recylclerview
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getApplicationContext(), InCardsetActivity.class);
@@ -70,7 +72,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
                 intent.putExtras(b);
                 startActivity(intent);
             }
-
+            //ClickListener für die Play-Buttons in den Cardsets
             @Override
             public void onPlayButtonClick(int position) {
                 CardDao cardDao = database.cardDao();

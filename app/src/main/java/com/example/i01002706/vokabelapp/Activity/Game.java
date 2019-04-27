@@ -30,7 +30,6 @@ public class Game extends AppCompatActivity {
     private TextView answer;
     private Button gewusst;
     private Button nichtGewusst;
-    //private ImageView image;
     private TextView question;
     private TextView level;
     private List<Card> level0= new ArrayList<>();
@@ -38,7 +37,7 @@ public class Game extends AppCompatActivity {
     private List<Card> level2= new ArrayList<>();
     private List<Card> level3= new ArrayList<>();
     private List<Card> level4= new ArrayList<>();
-
+    private Random r;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -55,6 +54,7 @@ public class Game extends AppCompatActivity {
             String title = (String) b.get("title");
             setTitle(title);
         }
+        r = new Random();
         count = 0;
         currentCard = new Card();
         currentCard.setFrage("");
@@ -68,11 +68,8 @@ public class Game extends AppCompatActivity {
         question = findViewById(R.id.gameQuestion);
         answer = findViewById(R.id.gameAnswer);
         level = findViewById(R.id.level);
-        //image = findViewById(R.id.imageView2);
         answer.setText("?");
-        //answer.setTextSize(40);
         answer.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        //question.setTextSize(40);
         question.setText(currentCard.getFrage());
         question.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         gewusst = findViewById(R.id.gewusst);
@@ -80,7 +77,6 @@ public class Game extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-
         gewusst.setWidth(size.x/2);
         gewusst.setHeight(size.y/4);
         nichtGewusst.setWidth(getWindowManager().getDefaultDisplay().getWidth()/2);
@@ -133,24 +129,7 @@ public class Game extends AppCompatActivity {
             }
         });
         //view.setBackgroundColor(Color.GRAY);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //answer.setText(currentCard.getAntwort());
-                Log.d("Test", "image" + currentCard.getImage());
-               /* try {
-                    Uri uri = Uri.parse(currentCard.getImage());
-                    InputStream imageStream = getContentResolver().openInputStream(uri);
-                    Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    image.setImageBitmap(selectedImage);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }*/
 
-                //gewusst.setVisibility(View.VISIBLE);
-                //nichtGewusst.setVisibility(View.VISIBLE);
-            }
-        });
 
 
     }
@@ -190,7 +169,6 @@ public class Game extends AppCompatActivity {
         }
     }
     private void chooseCard(){
-        Random r = new Random();
         int bound = 100;
         int level = r.nextInt(bound);
         if(count2 == 5 ||(level >= 95 && level < 100)){
@@ -206,12 +184,11 @@ public class Game extends AppCompatActivity {
         }
     }
     private void chooseFromLevel0(){
-        Random r = new Random();
         if(level0.size()<=0){
             chooseFromLevel1();
         }else{
             Card card = level0.get( r.nextInt(level0.size()));
-            if((currentCard.getFrage().equals(card.getFrage()))) {
+            if((currentCard.getFrage().equals(card.getFrage()))&&cards.size()>1) {
                 chooseCard();
             }else{
                 currentCard = card;
@@ -219,12 +196,12 @@ public class Game extends AppCompatActivity {
         }
     }
     private void chooseFromLevel1(){
-        Random r = new Random();
         if(level1.size()<=0){
             chooseFromLevel2();
         }else{
             Card card = level1.get( r.nextInt(level1.size()));
-            if((currentCard.getFrage().equals(card.getFrage()))) {
+            Log.d("Test2","Cardsize " + cards.size());
+            if((currentCard.getFrage().equals(card.getFrage()))&&cards.size()>1) {
                 chooseCard();
             }else{
                 currentCard = card;
@@ -232,12 +209,11 @@ public class Game extends AppCompatActivity {
         }
     }
     private void chooseFromLevel2(){
-        Random r = new Random();
         if(level2.size()<=0){
             chooseFromLevel3();
         }else{
             Card card = level2.get( r.nextInt(level2.size()));
-            if((currentCard.getFrage().equals(card.getFrage()))) {
+            if((currentCard.getFrage().equals(card.getFrage()))&&cards.size()>1) {
                 chooseCard();
             }else{
                 currentCard = card;
@@ -245,12 +221,11 @@ public class Game extends AppCompatActivity {
         }
     }
     private void chooseFromLevel3(){
-        Random r = new Random();
         if(level3.size()<=0){
             chooseFromLevel4();
         }else{
             Card card = level3.get( r.nextInt(level3.size()));
-            if((currentCard.getFrage().equals(card.getFrage()))) {
+            if((currentCard.getFrage().equals(card.getFrage()))&&cards.size()>1) {
                 chooseCard();
             }else{
                 currentCard = card;
@@ -258,12 +233,11 @@ public class Game extends AppCompatActivity {
         }
     }
     private void chooseFromLevel4(){
-        Random r = new Random();
         if(level4.size()<=0){
             chooseFromLevel0();
         }else{
             Card card = level4.get( r.nextInt(level4.size()));
-            if((currentCard.getFrage().equals(card.getFrage()))) {
+            if((currentCard.getFrage().equals(card.getFrage()))&&cards.size()>1) {
                 chooseCard();
             }else{
                 currentCard = card;
