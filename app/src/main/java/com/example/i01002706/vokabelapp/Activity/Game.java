@@ -1,10 +1,12 @@
 package com.example.i01002706.vokabelapp.Activity;
 
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -24,21 +26,17 @@ public class Game extends AppCompatActivity {
 
     private int cardsetId;
     private List<Card> cards = new ArrayList<>();
-    private int count;
-    private int count2 = 0;
     private Card currentCard;
     private TextView answer;
     private Button gewusst;
     private Button nichtGewusst;
     private TextView question;
-    private TextView level;
-    private List<Card> level0= new ArrayList<>();
-    private List<Card> level1= new ArrayList<>();
-    private List<Card> level2= new ArrayList<>();
-    private List<Card> level3= new ArrayList<>();
-    private List<Card> level4= new ArrayList<>();
+    private final List<Card> level0= new ArrayList<>();
+    private final List<Card> level1= new ArrayList<>();
+    private final List<Card> level2= new ArrayList<>();
+    private final List<Card> level3= new ArrayList<>();
+    private final List<Card> level4= new ArrayList<>();
     private Random r;
-
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -55,7 +53,6 @@ public class Game extends AppCompatActivity {
             setTitle(title);
         }
         r = new Random();
-        count = 0;
         currentCard = new Card();
         currentCard.setFrage("");
         currentCard.setAntwort("");
@@ -67,11 +64,12 @@ public class Game extends AppCompatActivity {
         chooseCard();
         question = findViewById(R.id.gameQuestion);
         answer = findViewById(R.id.gameAnswer);
-        level = findViewById(R.id.level);
         answer.setText("?");
         answer.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        answer.setMovementMethod(new ScrollingMovementMethod());
         question.setText(currentCard.getFrage());
         question.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        question.setMovementMethod(new ScrollingMovementMethod());
         gewusst = findViewById(R.id.gewusst);
         nichtGewusst = findViewById(R.id.nichtGewusst);
         Display display = getWindowManager().getDefaultDisplay();
@@ -79,13 +77,13 @@ public class Game extends AppCompatActivity {
         display.getSize(size);
         gewusst.setWidth(size.x/2);
         gewusst.setHeight(size.y/4);
-        nichtGewusst.setWidth(getWindowManager().getDefaultDisplay().getWidth()/2);
-        nichtGewusst.setHeight(getWindowManager().getDefaultDisplay().getHeight()/4);
-
+        gewusst.setBackgroundColor(Color.rgb(125, 244, 66));
+        nichtGewusst.setWidth(size.x/2);
+        nichtGewusst.setHeight(size.y/4);
+        nichtGewusst.setBackgroundColor(Color.rgb(244, 95, 65));
         gewusst.setVisibility(View.INVISIBLE);
         nichtGewusst.setVisibility(View.INVISIBLE);
 
-        level.setText("Level" + currentCard.getLevel());
         gewusst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +106,7 @@ public class Game extends AppCompatActivity {
 
                 if(currentCard.getLevel()>0) {
                     currentCard.setLevel(currentCard.getLevel() - 1);
-                    long id = cardDao.update(currentCard);
+                    cardDao.update(currentCard);
 
                 }
                 //Eintrag in der Tabelle
@@ -119,7 +117,7 @@ public class Game extends AppCompatActivity {
 
             }
         });
-        View view = findViewById(R.id.touch);
+
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,21 +126,11 @@ public class Game extends AppCompatActivity {
                 nichtGewusst.setVisibility(View.VISIBLE);
             }
         });
-        //view.setBackgroundColor(Color.GRAY);
-
-
 
     }
     private void loadData(){
-        if(count>=cards.size()-1){
-            count = 0;
-        }else {
-            count++;
-        }
-
 
         answer.setText("?");
-        level.setText("Level "+currentCard.getLevel());
         question.setText(currentCard.getFrage());
         gewusst = findViewById(R.id.gewusst);
         nichtGewusst = findViewById(R.id.nichtGewusst);
@@ -171,6 +159,7 @@ public class Game extends AppCompatActivity {
     private void chooseCard(){
         int bound = 100;
         int level = r.nextInt(bound);
+        int count2 = 0;
         if(count2 == 5 ||(level >= 95 && level < 100)){
             chooseFromLevel4();
         }else if(count2 == 4 || (level >= 80 && level < 95)){
@@ -244,4 +233,5 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+
 }

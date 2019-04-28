@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">VokabelApp</string>
-    <string name="category">Category</string>
     <string name="nicht_gewusst">Nicht Gewusst</string>
     <string name="gewusst">Gewusst</string>
     <string name="textview">TextView</string>

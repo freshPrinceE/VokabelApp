@@ -21,7 +21,7 @@ import java.util.List;
 public class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHolder> {
 
     private List<Cardset> mData = new ArrayList<>();
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private OnItemClickListener onClickListener;
 
     public interface OnItemClickListener{
@@ -61,8 +61,8 @@ public class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHold
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
-        Button play;
+        final TextView myTextView;
+        final Button play;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -109,10 +109,7 @@ public class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHold
         this.onClickListener = onItemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
+
 
     public void addCategory(List<Cardset> cardsets){
         mData = cardsets;

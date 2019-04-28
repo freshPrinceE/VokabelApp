@@ -7,40 +7,29 @@
     tools:context=".Activity.Game">
 
     <TextView
-        android:id="@+id/level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <View
-        android:id="@+id/touch"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_above="@id/gewusst"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/gameQuestion"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="@string/textview"
+        android:maxLines="4"
+        android:scrollbars="vertical"
         app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="12sp"
+        app:autoSizeMinTextSize="9sp"
         app:autoSizeMaxTextSize="100sp"/>
-
     <TextView
         android:id="@+id/gameAnswer"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
+        android:maxLines="4"
         app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="12sp"
+        app:autoSizeMinTextSize="9sp"
         app:autoSizeMaxTextSize="100sp"
         android:text="@string/textview"
+        android:scrollbars="vertical"
          />
 
     <Button
@@ -55,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:text="@string/nicht_gewusst" />
 
 </RelativeLayout>

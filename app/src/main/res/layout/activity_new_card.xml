@@ -5,54 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.NewCard">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/titleCardset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/titleCardset"
-        android:ems="10"
-        android:hint="Question"
-        android:inputType="text" />
+        <TextView
+            android:id="@+id/titleCardset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="TextView" />
+
+        <EditText
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleCardset"
+            android:ems="10"
+            android:hint="Question"
+            android:inputType="text" />
 
 
-    <EditText
-        android:id="@+id/answer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/question"
-        android:hint="Answer"
-        android:ems="10"
-        android:inputType="text"
-         />
+        <EditText
+            android:id="@+id/answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/question"
+            android:ems="10"
+            android:hint="Answer"
+            android:inputType="text" />
 
-    <Button
-        android:id="@+id/nextCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/answer"
-        android:layout_alignParentEnd="true"
-        android:text="Next Card"
-        />
+        <Button
+            android:id="@+id/nextCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/answer"
+            android:layout_alignParentEnd="true"
+            android:text="Next Card" />
 
-    <Button
-        android:id="@+id/finish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nextCard"
-        android:layout_alignParentEnd="true"
-        android:text="Finish"
-        />
+        <Button
+            android:id="@+id/finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nextCard"
+            android:layout_alignParentEnd="true"
+            android:text="Finish" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

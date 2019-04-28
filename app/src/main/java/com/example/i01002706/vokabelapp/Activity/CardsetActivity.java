@@ -26,9 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CardsetActivity extends AppCompatActivity implements AdapterCardset.ItemClickListener {
+public class CardsetActivity extends AppCompatActivity {
     private AdapterCardset adapter;
-    private CardsetDao cardsetDao;
     private int categoryId;
     private List<Cardset> cardsets = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -37,8 +36,6 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cardset);
-        ArrayList<Cardset> categories = new ArrayList<>();
-
 
 
         Bundle b = getIntent().getExtras();
@@ -104,11 +101,10 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         myFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Cardset kks = new Cardset();
-                kks.setName("Test");
-                kks.setCategoryId(categoryId);
-                cardsetDao.insert(kks);*/
-                changeActivity();
+                Intent intent = new Intent(getApplicationContext(), NewCardset.class);
+                intent.putExtra("categoryID", categoryId);
+                Log.d("Category", "CardsetID: "+categoryId);
+                startActivity(intent);
             }
         });
     }
@@ -127,15 +123,7 @@ public class CardsetActivity extends AppCompatActivity implements AdapterCardset
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
-    private void changeActivity(){
-        Intent intent = new Intent(this, NewCardset.class);
-        intent.putExtra("categoryID", categoryId);
-        startActivity(intent);
-    }
-    @Override
-    public void onItemClick(View view, int position) {
 
-    }
     @Override
     protected void onRestart() {
         super.onRestart();

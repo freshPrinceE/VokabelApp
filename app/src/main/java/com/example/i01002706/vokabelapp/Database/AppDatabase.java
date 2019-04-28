@@ -1,11 +1,9 @@
 package com.example.i01002706.vokabelapp.Database;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 @Database(entities = {Category.class, Cardset.class, Card.class}, version = 12)
 public abstract class AppDatabase extends RoomDatabase {
@@ -30,7 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 }}}
         return INSTANCE;
     }
-    private static RoomDatabase.Callback sOnOpenCallback =
+    private static final RoomDatabase.Callback sOnOpenCallback =
             new RoomDatabase.Callback(){
             };
 

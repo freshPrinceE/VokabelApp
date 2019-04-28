@@ -21,7 +21,6 @@ import com.example.i01002706.vokabelapp.Database.CardDao;
 import com.example.i01002706.vokabelapp.Helper.SwipeToDeleteCallback;
 import com.example.i01002706.vokabelapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InCardsetActivity extends AppCompatActivity {

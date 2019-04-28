@@ -9,14 +9,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.InputType;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import 	android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.example.i01002706.vokabelapp.Activity.CardsetActivity;
 import com.example.i01002706.vokabelapp.Adapter.AdapterCategory;
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
 import com.example.i01002706.vokabelapp.Database.Category;
@@ -27,7 +30,7 @@ import com.example.i01002706.vokabelapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterCategory.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private AdapterCategory adapter;
     private String m_Text="";
@@ -40,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         AppDatabase database = AppDatabase.getDatabase(this);
         categoryDao = database.categoryDao();
         categories = categoryDao.allCategories();
@@ -52,7 +53,23 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterCategory(this);
         adapter.addCategory(categories);
-        adapter.setClickListener(this);
+        adapter.setClickListener(new AdapterCategory.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(getApplicationContext(), CardsetActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("id", adapter.getItem(position).getId());
+                Log.d("Category", "CategoryID: "+adapter.getItem(position).getId());
+                b.putString("title", adapter.getItem(position).getTitle());
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onEditClick(int position) {
+                changeName(position).show();
+            }
+        });
         recyclerView.setAdapter(adapter);
         enableSwipeToDeleteAndUndo();
         FloatingActionButton myFab = findViewById(R.id.floatingButton);
@@ -89,27 +106,57 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
 
     }
 
+    private AlertDialog.Builder changeName(int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Change name");
 
-    public void onItemClick(View view, int position) {
-        Intent intent = new Intent(this, CardsetActivity.class);
-        Bundle b = new Bundle();
-        b.putInt("id", adapter.getItem(position).getId());
-        b.putString("title", adapter.getItem(position).getTitle());
-        intent.putExtras(b);
-        startActivity(intent);
+        // Set up the input
+        final EditText input = new EditText(this);
+        final int position2 = position;
+        input.setText(adapter.getItem(position).getTitle());
+        //input.setText(adapter.getItem(position).getTitle());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text = input.getText().toString();
+                if(!m_Text.equals("")) {
+                    Category category1 = adapter.getItem(position2);
+                    category1.setTitle(m_Text);
+                    categoryDao.update(category1);
+                    categories.get(position2).setTitle(m_Text);
+                    adapter.addCategory(categoryDao.allCategories());
+                    adapter.notifyDataSetChanged();
+                    text.setText("");
+
+                }else {
+                    Toast.makeText(getBaseContext(), "Please enter a Name for the Category", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        return builder;
     }
-
     private AlertDialog.Builder showDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Category");
 
-// Set up the input
+        // Set up the input
         final EditText input = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-// Set up the buttons
+        // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -118,8 +165,10 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
                     Category category1 = new Category();
                     category1.setTitle(m_Text);
 
-                    categoryDao.insert(category1);
-                    adapter.addCategoryOne(category1);
+                    int id = (int) categoryDao.insert(category1);
+                    category1.setId(id);
+                    categories.add(category1);
+                    adapter.addCategory(categoryDao.allCategories());
                     adapter.notifyDataSetChanged();
                     text.setText("");
 
@@ -142,5 +191,34 @@ public class MainActivity extends AppCompatActivity implements AdapterCategory.I
         super.onRestart();
         adapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        //adapter.addCategory(categories);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        String userInput = s.toLowerCase();
+        List<Category> newList = new ArrayList<>();
+        for(Category category: categories){
+            if(category.getTitle().toLowerCase().contains(userInput)){
+                newList.add(category);
+            }
+        }
+        adapter.addCategory(newList);
+        return true;
     }
 }

@@ -13,21 +13,19 @@ import android.widget.Toast;
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
 import com.example.i01002706.vokabelapp.Database.Card;
 import com.example.i01002706.vokabelapp.Database.CardDao;
-import com.example.i01002706.vokabelapp.Database.Cardset;
 import com.example.i01002706.vokabelapp.Database.CardsetDao;
 import com.example.i01002706.vokabelapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class NewCard extends AppCompatActivity {
 
-    private static final int PICK_IMG = 100;
-    private static List<Card> cards = new ArrayList<>();
+    private static final List<Card> cards = new ArrayList<>();
     private String question;
     private String answer;
     private CardDao cardDao;
-    private CardsetDao cardsetDao;
     private String name;
     private int categoryId;
     private  EditText q;
@@ -45,7 +43,7 @@ public class NewCard extends AppCompatActivity {
         Button finish = findViewById(R.id.finish);
         AppDatabase database = AppDatabase.getDatabase(getApplicationContext());
         cardDao = database.cardDao();
-        cardsetDao = database.cardsetDao();
+        CardsetDao cardsetDao = database.cardsetDao();
         Bundle b = getIntent().getExtras();
         if(b.get("name")!=null) {
             name = (String) b.get("name");
@@ -73,6 +71,8 @@ public class NewCard extends AppCompatActivity {
                     card.setFrage(question);
                     card.setLevel(0);
                     cards.add(card);
+                }else{
+                    Toast.makeText(getBaseContext(),"Please enter a question and an answer", Toast.LENGTH_SHORT).show();
                 }
                 q.setText("");
                 a.setText("");
@@ -112,5 +112,9 @@ public class NewCard extends AppCompatActivity {
             }
         });
 
+
     }
+
+
+
 }
