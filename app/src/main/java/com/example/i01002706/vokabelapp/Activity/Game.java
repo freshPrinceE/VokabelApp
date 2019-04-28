@@ -36,7 +36,6 @@ public class Game extends AppCompatActivity {
     private final List<Card> level3= new ArrayList<>();
     private final List<Card> level4= new ArrayList<>();
     private Random r;
-    private AppDatabase database;
     private CardDao cardDao;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -104,7 +103,7 @@ public class Game extends AppCompatActivity {
         currentCard.setFrage("");
         currentCard.setAntwort("");
         currentCard.setLevel(0);
-        database = AppDatabase.getDatabase(this);
+        AppDatabase database = AppDatabase.getDatabase(this);
         cardDao = database.cardDao();
         cards = cardDao.allCards(cardsetId);
         defineLevels(cards);
@@ -164,16 +163,15 @@ public class Game extends AppCompatActivity {
     private void chooseCard(){
         int bound = 100;
         int level = r.nextInt(bound);
-        int count2 = 0;
-        if(count2 == 5 ||(level >= 95 && level < 100)){
+        if((level >= 95 && level < 100)){
             chooseFromLevel4();
-        }else if(count2 == 4 || (level >= 80 && level < 95)){
+        }else if((level >= 80 && level < 95)){
             chooseFromLevel3();
-        }else if(count2 == 3 ||(level >= 65 && level < 80)){
+        }else if((level >= 65 && level < 80)){
             chooseFromLevel2();
-        }else if(count2 == 2 || (level >= 40 && level < 65)){
+        }else if((level >= 40 && level < 65)){
             chooseFromLevel1();
-        }else if(count2 == 1 || (level >= 0 && level <40) ){
+        }else if((level >= 0 && level <40) ){
             chooseFromLevel0();
         }
     }
