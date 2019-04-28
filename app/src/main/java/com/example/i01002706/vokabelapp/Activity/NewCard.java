@@ -3,7 +3,6 @@ package com.example.i01002706.vokabelapp.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +37,6 @@ public class NewCard extends AppCompatActivity {
         setContentView(R.layout.activity_new_card);
 
 
-        Log.d("Test", "Question: " + question + "  Answer: " + answer);
         Button nextCard = findViewById(R.id.nextCard);
         Button finish = findViewById(R.id.finish);
         AppDatabase database = AppDatabase.getDatabase(getApplicationContext());
@@ -57,6 +55,7 @@ public class NewCard extends AppCompatActivity {
         TextView tv = findViewById(R.id.titleCardset);
         tv.setText(name);
 
+        //Erstellen der Karten, wenn "Next" gedrückt wird, löschen der Felder
         nextCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +79,7 @@ public class NewCard extends AppCompatActivity {
             }
         });
 
+        //Erstellen der Karten in der Datenbank, wenn "Finish" gedrückt wird
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

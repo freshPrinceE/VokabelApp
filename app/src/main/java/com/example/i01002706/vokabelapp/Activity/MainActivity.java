@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,13 +52,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterCategory(this);
         adapter.addCategory(categories);
+        //öffnen der Cardset-Seite zu dem angeklickten Category
         adapter.setClickListener(new AdapterCategory.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getApplicationContext(), CardsetActivity.class);
                 Bundle b = new Bundle();
                 b.putInt("id", adapter.getItem(position).getId());
-                Log.d("Category", "CategoryID: "+adapter.getItem(position).getId());
                 b.putString("title", adapter.getItem(position).getTitle());
                 intent.putExtras(b);
                 startActivity(intent);
@@ -73,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         recyclerView.setAdapter(adapter);
         enableSwipeToDeleteAndUndo();
         FloatingActionButton myFab = findViewById(R.id.floatingButton);
+
+        //Falls keine Categories vorhanden sind Text anzeigen
         if(adapter.getItemCount()<=0){
             text.setText("No Categories found, create some new!");
         }else{
@@ -193,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
+    //Searchbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);

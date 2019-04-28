@@ -3,13 +3,11 @@ package com.example.i01002706.vokabelapp.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.i01002706.vokabelapp.Activity.NewCard;
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
 import com.example.i01002706.vokabelapp.Database.Cardset;
 import com.example.i01002706.vokabelapp.Database.CardsetDao;
@@ -29,8 +27,8 @@ public class NewCardset extends AppCompatActivity {
             if(b.get("categoryID")!=null) {
                 categoryID = (int) b.get("categoryID");
             }
-            Log.d("CategoryId:", "New: " + b.get("categoryID"));
             Button next = findViewById(R.id.next);
+            //Weiter zur Seite der Erstellung von Karten (NewCard.class), wenn "Next" geklickt wird (Wenn der eigegebene Name nicht leer ist)
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -2,7 +2,6 @@ package com.example.i01002706.vokabelapp.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,15 +76,11 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
 
         @Override
         public void onClick(View view) {
-            Log.d("Button", "gedrückt3");
             if (onClickListener != null){
-                Log.d("Button", "gedrückt2");
 
                 if(view.getId() == edit.getId()){
-                    Log.d("Button", "gedrückt4");
                     onClickListener.onEditClick(getAdapterPosition());
                 }else {
-                    Log.d("Button", "gedrückt");
                     onClickListener.onItemClick(getAdapterPosition());
                 }
             }

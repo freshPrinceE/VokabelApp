@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +36,8 @@ public class Game extends AppCompatActivity {
     private final List<Card> level3= new ArrayList<>();
     private final List<Card> level4= new ArrayList<>();
     private Random r;
+    private AppDatabase database;
+    private CardDao cardDao;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -52,42 +53,10 @@ public class Game extends AppCompatActivity {
             String title = (String) b.get("title");
             setTitle(title);
         }
-        r = new Random();
-        currentCard = new Card();
-        currentCard.setFrage("");
-        currentCard.setAntwort("");
-        currentCard.setLevel(0);
-        final AppDatabase database = AppDatabase.getDatabase(this);
-        final CardDao cardDao = database.cardDao();
-        cards = cardDao.allCards(cardsetId);
-        defineLevels(cards);
-        chooseCard();
-        question = findViewById(R.id.gameQuestion);
-        answer = findViewById(R.id.gameAnswer);
-        answer.setText("?");
-        answer.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        answer.setMovementMethod(new ScrollingMovementMethod());
-        question.setText(currentCard.getFrage());
-        question.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        question.setMovementMethod(new ScrollingMovementMethod());
-        gewusst = findViewById(R.id.gewusst);
-        nichtGewusst = findViewById(R.id.nichtGewusst);
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        gewusst.setWidth(size.x/2);
-        gewusst.setHeight(size.y/4);
-        gewusst.setBackgroundColor(Color.rgb(125, 244, 66));
-        nichtGewusst.setWidth(size.x/2);
-        nichtGewusst.setHeight(size.y/4);
-        nichtGewusst.setBackgroundColor(Color.rgb(244, 95, 65));
-        gewusst.setVisibility(View.INVISIBLE);
-        nichtGewusst.setVisibility(View.INVISIBLE);
-
+        init();
         gewusst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Current","Card: " + currentCard.getLevel());
                 if(currentCard.getLevel()<4) {
                     currentCard.setLevel(currentCard.getLevel() + 1);
                     cardDao.update(currentCard);
@@ -128,6 +97,41 @@ public class Game extends AppCompatActivity {
         });
 
     }
+
+    private void init(){
+        r = new Random();
+        currentCard = new Card();
+        currentCard.setFrage("");
+        currentCard.setAntwort("");
+        currentCard.setLevel(0);
+        database = AppDatabase.getDatabase(this);
+        cardDao = database.cardDao();
+        cards = cardDao.allCards(cardsetId);
+        defineLevels(cards);
+        chooseCard();
+        question = findViewById(R.id.gameQuestion);
+        answer = findViewById(R.id.gameAnswer);
+        answer.setText("?");
+        answer.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        answer.setMovementMethod(new ScrollingMovementMethod());
+        question.setText(currentCard.getFrage());
+        question.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        question.setMovementMethod(new ScrollingMovementMethod());
+        gewusst = findViewById(R.id.gewusst);
+        nichtGewusst = findViewById(R.id.nichtGewusst);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        gewusst.setWidth(size.x/2);
+        gewusst.setHeight(size.y/4);
+        gewusst.setBackgroundColor(Color.rgb(125, 244, 66));
+        nichtGewusst.setWidth(size.x/2);
+        nichtGewusst.setHeight(size.y/4);
+        nichtGewusst.setBackgroundColor(Color.rgb(244, 95, 65));
+        gewusst.setVisibility(View.INVISIBLE);
+        nichtGewusst.setVisibility(View.INVISIBLE);
+
+    }
     private void loadData(){
 
         answer.setText("?");
@@ -156,6 +160,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    //Auswählen der Karte nach Wahrscheinlichkeit, anhand des Levels
     private void chooseCard(){
         int bound = 100;
         int level = r.nextInt(bound);
@@ -172,6 +177,7 @@ public class Game extends AppCompatActivity {
             chooseFromLevel0();
         }
     }
+    //Karte zufällig auswählen von Level0, falls keine vorhanden, aus Level1 wählen
     private void chooseFromLevel0(){
         if(level0.size()<=0){
             chooseFromLevel1();
@@ -184,12 +190,12 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    //Karte zufällig auswählen von Level1, falls keine vorhanden, aus Level2 wählen
     private void chooseFromLevel1(){
         if(level1.size()<=0){
             chooseFromLevel2();
         }else{
             Card card = level1.get( r.nextInt(level1.size()));
-            Log.d("Test2","Cardsize " + cards.size());
             if((currentCard.getFrage().equals(card.getFrage()))&&cards.size()>1) {
                 chooseCard();
             }else{
@@ -197,6 +203,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    //Karte zufällig auswählen von Level2, falls keine vorhanden, aus Level3 wählen
     private void chooseFromLevel2(){
         if(level2.size()<=0){
             chooseFromLevel3();
@@ -209,6 +216,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    //Karte zufällig auswählen von Level3, falls keine vorhanden, aus Level4 wählen
     private void chooseFromLevel3(){
         if(level3.size()<=0){
             chooseFromLevel4();
@@ -221,6 +229,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    //Karte zufällig auswählen von Level4, falls keine vorhanden, aus Level0 wählen
     private void chooseFromLevel4(){
         if(level4.size()<=0){
             chooseFromLevel0();

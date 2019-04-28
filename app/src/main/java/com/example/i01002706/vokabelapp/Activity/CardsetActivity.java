@@ -81,7 +81,6 @@ public class CardsetActivity extends AppCompatActivity {
             public void onPlayButtonClick(int position) {
                 CardDao cardDao = database.cardDao();
                 List<Card> cards = cardDao.allCards(adapter.getItem(position).getId());
-                Log.d("Test:","Cardsize:" + cards.size());
                 if(!(cards.size()<=0)) {
                     Intent intent = new Intent(getApplicationContext(), Game.class);
                     Bundle b = new Bundle();
@@ -97,7 +96,6 @@ public class CardsetActivity extends AppCompatActivity {
 
             @Override
             public void onEditButtonClick(int position) {
-                Log.d("Edit", "Test");
                 changeName(position).show();
             }
         });
@@ -118,7 +116,6 @@ public class CardsetActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewCardset.class);
                 intent.putExtra("categoryID", categoryId);
-                Log.d("Category", "CardsetID: "+categoryId);
                 startActivity(intent);
             }
         });

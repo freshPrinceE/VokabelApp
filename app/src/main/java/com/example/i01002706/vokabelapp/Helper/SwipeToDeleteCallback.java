@@ -17,6 +17,7 @@ import android.view.View;
 
 import com.example.i01002706.vokabelapp.R;
 
+//Freundlicherweise berreitgestellt von der Seite https://www.journaldev.com/23164/android-recyclerview-swipe-to-delete-undo
 abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 
     private final Paint mClearPaint;
