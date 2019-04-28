@@ -38,6 +38,7 @@ public class CardsetActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String m_Text="";
     private CardsetDao cardsetDao;
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class CardsetActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.addCategory(cardsets);
         enableSwipeToDelete();
-        TextView text = findViewById(R.id.text);
+        text = findViewById(R.id.text);
         //Anzeigen eines Textes, falls keine Cardsets vorhanden sind
         if(adapter.getItemCount()<=0){
             text.setText("No Cardsets found. Create some new!");
@@ -130,7 +131,11 @@ public class CardsetActivity extends AppCompatActivity {
                 adapter.deleteItem(position, getApplicationContext());
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getBaseContext(), "Cardset deleted", Toast.LENGTH_SHORT).show();
-
+                if(adapter.getItemCount()<=0){
+                    text.setText("No Cardsets found. Create some new!");
+                }else{
+                    text.setText("");
+                }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDeleteCallback);
