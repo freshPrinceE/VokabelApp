@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.i01002706.vokabelapp.Database.AppDatabase;
@@ -27,6 +28,7 @@ public class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHold
     public interface OnItemClickListener{
         void onItemClick(int position);
         void onPlayButtonClick(int position);
+        void onEditButtonClick(int position);
     }
     private AppDatabase database;
     // data is passed into the constructor
@@ -63,14 +65,15 @@ public class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView myTextView;
         final Button play;
-
+        final ImageButton edit;
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.categoryName);
             itemView.setOnClickListener(this);
             play = itemView.findViewById(R.id.play);
             play.setOnClickListener(this);
-
+            edit = itemView.findViewById(R.id.edit);
+            edit.setOnClickListener(this);
         }
 
         @Override
@@ -78,7 +81,10 @@ public class AdapterCardset extends RecyclerView.Adapter<AdapterCardset.ViewHold
             if (onClickListener != null){
                 if(view.getId() == play.getId()){
                     onClickListener.onPlayButtonClick(getAdapterPosition());
-                }else {
+                }else if(view.getId() == edit.getId()){
+                    onClickListener.onEditButtonClick(getAdapterPosition());
+                }
+                else {
                     onClickListener.onItemClick(getAdapterPosition());
                 }
             }

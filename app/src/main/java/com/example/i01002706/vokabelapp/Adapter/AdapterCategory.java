@@ -41,7 +41,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.list_item, parent, false);
+        View view = mInflater.inflate(R.layout.list_item_category, parent, false);
         return new ViewHolder(view);
     }
 
